@@ -10,7 +10,7 @@ def symbol(R, pieces=5):
     scale = (3-np.sqrt(5))/2
     shift = (np.sqrt(5)-1)/2
     base = sd.circle(R, segments=pieces)
-    for _ in range(4):
+    for _ in range(3):
         base2 = sd.scale(scale)(base)
         base3 = sd.translate([R*shift,0])(base2)
         base = sd.union()(*[sd.rotate([0,0,i*360/pieces])(base3) for i in range(pieces)])
