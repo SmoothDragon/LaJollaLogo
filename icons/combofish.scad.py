@@ -37,15 +37,19 @@ def snowfish(R, pieces=5, iterations=3):
 
 if __name__ == '__main__':
     fn = 512
-    R = 100
-    iterations = 2
-    star = starfish(R,iterations=iterations)
-    if TrueL
-        scale = 2*np.sqrt(5)-4
+    R = 50
+    iterations = 3
+    # star = starfish(R,iterations=iterations)
+    # print(sd.scad_render(star, file_header=f'$fn={fn};'))
+    # exit(0)
+    if True:
+        scale = .7*(2*np.sqrt(5)-4)
+        scale = (2*np.sqrt(5)-4)
         snow = snowfish(scale*R,iterations=iterations)
     else:
         scale = .35
         snow = snowfish(scale*R,iterations=iterations)
         snow = sd.rotate([0,0,180])(snow)
-    total = star - snow
+    # total = star - snow
+    total = snow
     print(sd.scad_render(total, file_header=f'$fn={fn};'))
