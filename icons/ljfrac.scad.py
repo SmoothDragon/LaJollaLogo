@@ -52,6 +52,7 @@ if __name__ == '__main__':
     iterations = 4 #4
     t_iter = 1 # 2
     font_size = 9
+    scale = (1-1/phi)**4
     star = starfish(R,iterations=iterations)
     # star = sd.import_dxf('ljtree.dxf')
     year = sd.text('20  23', size=font_size, halign='center', valign='center')
@@ -63,8 +64,14 @@ if __name__ == '__main__':
     tree = sd.rotate([0,0,-90])(tree)
     stree = startree(R, tree, iterations=t_iter)
     outline = sd.circle(r=R)
-    outline = sd.minkowski()(star, sd.scale(.02)(starfish(R,iterations=0)))
-    final = outline-star+stree + year
+    pattern = sd.circle(r=scale*R, segments=5)
+    pattern = sd.rotate([0,0,90])(pattern)
+    outline = sd.minkowski()(star, pattern)
+    final = outline
+    final -= star
+    # final += pattern
+    final += stree
+    final += year
     # final = stree
     print(sd.scad_render(final, file_header=f'$fn={fn};'))
     exit(0)
