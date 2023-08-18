@@ -95,6 +95,7 @@ if __name__ == '__main__':
     final -= star
     final += tree
     final += year
+    # UnComment the next two lines for only one
     # print(sd.scad_render(final, file_header=f'$fn={fn};'))
     # exit(0)
     sy = 1.8
