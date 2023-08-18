@@ -6,6 +6,17 @@ import sys
 
 phi = (np.sqrt(5)+1)/2
 
+def pentagram(R):
+    wedge = sd.square(R)
+    wedge = sd.intersection()(
+                sd.rotate([0,0,18])(wedge),
+                sd.rotate([0,0,72])(wedge),
+                sd.translate([-R/2,0])(wedge),
+                )
+    wedge = sd.translate([0,-R])(wedge)
+    wedge = sd.rotate([0,0,180])(wedge)
+    base = sd.union()(*[sd.rotate([0,0,i*360/pieces])(wedge) for i in range(pieces)])
+
 def starfish(R, pieces=5, iterations=3):
     scale = 1-1/phi
     wedge = sd.square(R)
@@ -46,6 +57,23 @@ def startree(R, base, pieces=5, iterations=3):
     base = sd.rotate([0,0,90])(base)
     return base
 
+def rotate_spread(R, base, include_center=False, pieces=5, iterations=3):
+    scale = (3-np.sqrt(5))/2
+    shift = (np.sqrt(5)-1)/2
+    for _ in range(iterations):
+        base2 = sd.scale(scale)(base)
+        base3 = sd.translate([R*shift, 0])(base2)
+        base4 = sd.union()(*[sd.rotate([0, 0, i*360/pieces])(base3) for i in range(pieces)])
+        if include_center:
+            base += base4
+        else:
+            base = base4
+    base = sd.rotate([0,0,90])(base)
+    return base
+
+def logo1(R):
+    base = pentagram(R)
+
 if __name__ == '__main__':
     fn = 512
     R = 50
@@ -75,14 +103,4 @@ if __name__ == '__main__':
     # final = stree
     print(sd.scad_render(final, file_header=f'$fn={fn};'))
     exit(0)
-    if True:
-        scale = .7*(2*np.sqrt(5)-4)
-        scale = (2*np.sqrt(5)-4)
-        snow = snowfish(scale*R,iterations=iterations)
-    else:
-        scale = .35
-        snow = snowfish(scale*R,iterations=iterations)
-        snow = sd.rotate([0,0,180])(snow)
-    # total = star - snow
-    total = snow
     print(sd.scad_render(total, file_header=f'$fn={fn};'))
